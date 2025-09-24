@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -21,7 +20,6 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Share2, Plus, Trash2, Link as LinkIcon } from "lucide-react";
 import { useOnboardingStore, type SocialLink } from "@/lib/store";
-import { useRouter } from "next/navigation";
 
 const socialPlatforms = [
   { value: "instagram", label: "Instagram", baseUrl: "https://instagram.com/" },
@@ -36,10 +34,8 @@ const socialPlatforms = [
 ];
 
 export default function SocialsPage() {
-  const router = useRouter();
   const { socials, addSocial, updateSocial, removeSocial } =
     useOnboardingStore();
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const addNewSocial = () => {
     const newSocial: SocialLink = {
@@ -66,18 +62,6 @@ export default function SocialsPage() {
       updateSocial(id, { url: platformData.baseUrl + username });
     }
   };
-
-  const handleContinue = async () => {
-    setIsSubmitting(true);
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    setIsSubmitting(false);
-    router.push("/onboarding/links");
-  };
-
-  const canContinue = socials.length > 0;
 
   return (
     <div className="max-w-2xl mx-auto px-6 py-8">
@@ -114,7 +98,7 @@ export default function SocialsPage() {
                 <Share2 className="w-12 h-12 mx-auto mb-4 text-gray-300" />
                 <p>No social links added yet</p>
                 <p className="text-sm">
-                  Click "Add Social Link" to get started
+                  Click &quot;Add Social Link&quot; to get started
                 </p>
               </div>
             ) : (
@@ -260,17 +244,6 @@ export default function SocialsPage() {
               <Plus className="w-4 h-4" />
               Add Social Link
             </Button>
-
-            {/* Continue Button */}
-            <div className="flex justify-end pt-4">
-              <Button
-                onClick={handleContinue}
-                disabled={!canContinue || isSubmitting}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8"
-              >
-                {isSubmitting ? "Saving..." : "Continue"}
-              </Button>
-            </div>
           </CardContent>
         </Card>
 

@@ -58,7 +58,7 @@ const initialProfile: CreatorProfile = {
 
 export const useOnboardingStore = create<OnboardingStore>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       // Initial state
       gmail: "not_started",
       profile: initialProfile,

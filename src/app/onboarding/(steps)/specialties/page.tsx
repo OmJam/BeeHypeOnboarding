@@ -22,7 +22,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tags, Plus, X } from "lucide-react";
 import { useOnboardingStore } from "@/lib/store";
-import { useRouter } from "next/navigation";
 
 const predefinedSpecialties = [
   "Beauty",
@@ -38,14 +37,12 @@ const predefinedSpecialties = [
 ];
 
 export default function SpecialtiesPage() {
-  const router = useRouter();
-  const { profile, setProfile } = useOnboardingStore();
+  const { profile } = useOnboardingStore();
   const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>(
     profile.specialties || []
   );
   const [customSpecialty, setCustomSpecialty] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSpecialtyToggle = (specialty: string) => {
     setSelectedSpecialties((prev) => {
@@ -71,23 +68,6 @@ export default function SpecialtiesPage() {
   const handleRemoveSpecialty = (specialty: string) => {
     setSelectedSpecialties((prev) => prev.filter((s) => s !== specialty));
   };
-
-  const handleContinue = async () => {
-    if (selectedSpecialties.length === 0) return;
-
-    setIsSubmitting(true);
-
-    // Save to store
-    setProfile({ specialties: selectedSpecialties });
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    setIsSubmitting(false);
-    router.push("/onboarding/socials");
-  };
-
-  const canContinue = selectedSpecialties.length > 0;
 
   return (
     <div className="max-w-2xl mx-auto px-6 py-8">
@@ -166,7 +146,7 @@ export default function SpecialtiesPage() {
                   <DialogHeader>
                     <DialogTitle>Add Custom Specialty</DialogTitle>
                     <DialogDescription>
-                      Enter a specialty that isn't listed above.
+                      Enter a specialty that isn&apos;t listed above.
                     </DialogDescription>
                   </DialogHeader>
                   <div className="space-y-4">
@@ -230,17 +210,6 @@ export default function SpecialtiesPage() {
                 </div>
               </div>
             )}
-
-            {/* Continue Button */}
-            <div className="flex justify-end pt-4">
-              <Button
-                onClick={handleContinue}
-                disabled={!canContinue || isSubmitting}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8"
-              >
-                {isSubmitting ? "Saving..." : "Continue"}
-              </Button>
-            </div>
           </CardContent>
         </Card>
 
@@ -269,8 +238,8 @@ export default function SpecialtiesPage() {
                   Relevant Opportunities
                 </h3>
                 <p className="text-sm text-gray-600">
-                  You'll receive partnership opportunities that align with your
-                  content and audience.
+                  You&apos;ll receive partnership opportunities that align with
+                  your content and audience.
                 </p>
               </div>
             </div>

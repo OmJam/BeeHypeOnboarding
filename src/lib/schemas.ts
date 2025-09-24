@@ -1,20 +1,14 @@
 import { z } from 'zod'
 
 // Profile schema
+
 export const profileSchema = z.object({
-  name: z.string()
-    .min(2, 'Name must be at least 2 characters')
-    .max(80, 'Name must be less than 80 characters'),
-  headline: z.string()
-    .min(10, 'Headline must be at least 10 characters')
-    .max(60, 'Headline must be less than 60 characters'),
-  bio: z.string()
-    .min(50, 'Bio must be at least 50 characters')
-    .max(600, 'Bio must be less than 600 characters'),
-  location: z.string().optional(),
-  specialties: z.array(z.string())
-    .min(1, 'Please select at least one specialty')
-})
+  name: z.string().trim().min(1, "Full name is required").max(80),
+  headline: z.string().trim().min(1, "Professional headline is required").max(60),
+  bio: z.string().trim().min(1, "Bio is required").max(600),
+  location: z.string().optional().default(""),
+  specialties: z.array(z.string()).optional().default([]),
+});
 
 // Social link schema
 export const socialRowSchema = z.object({
@@ -51,6 +45,6 @@ export const stepValidationSchemas = {
   intro: z.object({}) // No validation needed
 }
 
-export type ProfileFormData = z.infer<typeof profileSchema>
+export type ProfileFormData = z.infer<typeof profileSchema>;
 export type SocialRowFormData = z.infer<typeof socialRowSchema>
 export type CustomLinkFormData = z.infer<typeof customLinkSchema>

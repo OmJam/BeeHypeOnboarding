@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,15 +11,11 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Mail, CheckCircle2, XCircle, Loader2, RefreshCw } from "lucide-react";
 import { useOnboardingStore } from "@/lib/store";
-import { useRouter } from "next/navigation";
 
 export default function GmailPage() {
-  const router = useRouter();
   const { gmail, setGmail } = useOnboardingStore();
-  const [isConnecting, setIsConnecting] = useState(false);
 
   const handleConnect = async () => {
-    setIsConnecting(true);
     setGmail("connecting");
 
     // Simulate connection delay
@@ -29,19 +24,10 @@ export default function GmailPage() {
     // 80% success rate simulation
     const success = Math.random() < 0.8;
     setGmail(success ? "success" : "failed");
-    setIsConnecting(false);
   };
 
   const handleRetry = () => {
     setGmail("not_started");
-  };
-
-  const handleSkip = () => {
-    router.push("/onboarding/profile");
-  };
-
-  const handleContinue = () => {
-    router.push("/onboarding/profile");
   };
 
   return (
@@ -121,19 +107,8 @@ export default function GmailPage() {
             )}
 
             {/* Action Buttons */}
-            {gmail === "success" && (
-              <div className="flex justify-center">
-                <Button
-                  onClick={handleContinue}
-                  className="bg-green-600 hover:bg-green-700 text-white"
-                >
-                  Continue
-                </Button>
-              </div>
-            )}
-
             {gmail === "failed" && (
-              <div className="flex gap-3 justify-center">
+              <div className="flex justify-center">
                 <Button
                   onClick={handleRetry}
                   variant="outline"
@@ -141,12 +116,6 @@ export default function GmailPage() {
                 >
                   <RefreshCw className="w-4 h-4" />
                   Try Again
-                </Button>
-                <Button
-                  onClick={handleSkip}
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
-                >
-                  Skip
                 </Button>
               </div>
             )}

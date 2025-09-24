@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -20,7 +19,6 @@ import {
 } from "@/components/ui/select";
 import { Link as LinkIcon, Plus, Trash2, Globe } from "lucide-react";
 import { useOnboardingStore, type CustomLink } from "@/lib/store";
-import { useRouter } from "next/navigation";
 
 const linkSuggestions = [
   "Portfolio",
@@ -44,9 +42,7 @@ const linkSuggestions = [
 ];
 
 export default function LinksPage() {
-  const router = useRouter();
   const { links, addLink, updateLink, removeLink } = useOnboardingStore();
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const addNewLink = () => {
     const newLink: CustomLink = {
@@ -64,18 +60,6 @@ export default function LinksPage() {
   ) => {
     updateLink(id, { [field]: value });
   };
-
-  const handleContinue = async () => {
-    setIsSubmitting(true);
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    setIsSubmitting(false);
-    router.push("/onboarding/intro");
-  };
-
-  const canContinue = true; // Links are optional
 
   return (
     <div className="max-w-2xl mx-auto px-6 py-8">
@@ -101,8 +85,8 @@ export default function LinksPage() {
           <CardHeader>
             <CardTitle>Additional Links</CardTitle>
             <CardDescription>
-              Add any additional links you'd like to share with brands. This
-              step is optional.
+              Add any additional links you&apos;d like to share with brands.
+              This step is optional.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -111,7 +95,9 @@ export default function LinksPage() {
               <div className="text-center py-8 text-gray-500">
                 <Globe className="w-12 h-12 mx-auto mb-4 text-gray-300" />
                 <p>No custom links added yet</p>
-                <p className="text-sm">Click "Add Link" to get started</p>
+                <p className="text-sm">
+                  Click &quot;Add Link&quot; to get started
+                </p>
               </div>
             ) : (
               <div className="space-y-4">
@@ -200,17 +186,6 @@ export default function LinksPage() {
               <Plus className="w-4 h-4" />
               Add Link
             </Button>
-
-            {/* Continue Button */}
-            <div className="flex justify-end pt-4">
-              <Button
-                onClick={handleContinue}
-                disabled={isSubmitting}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8"
-              >
-                {isSubmitting ? "Saving..." : "Continue"}
-              </Button>
-            </div>
           </CardContent>
         </Card>
 

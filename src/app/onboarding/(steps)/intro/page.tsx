@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -17,28 +15,11 @@ import {
   Mail,
   User,
   Share2,
-  Link as LinkIcon,
 } from "lucide-react";
 import { useOnboardingStore } from "@/lib/store";
-import { useRouter } from "next/navigation";
 
 export default function IntroPage() {
-  const router = useRouter();
-  const { gmail, profile, socials, links, setCompleted } = useOnboardingStore();
-  const [isFinishing, setIsFinishing] = useState(false);
-
-  const handleFinish = async () => {
-    setIsFinishing(true);
-
-    // Mark onboarding as completed
-    setCompleted(true);
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    setIsFinishing(false);
-    router.push("/dashboard");
-  };
+  const { gmail, profile, socials } = useOnboardingStore();
 
   // Check completion status
   const isGmailConnected = gmail === "success";
@@ -69,8 +50,6 @@ export default function IntroPage() {
     },
   ];
 
-  const allRequiredCompleted = isProfileComplete && hasSocialLinks;
-
   return (
     <div className="max-w-2xl mx-auto px-6 py-8">
       <div className="space-y-6">
@@ -81,11 +60,11 @@ export default function IntroPage() {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">
-              You're All Set!
+              You&apos;re All Set!
             </h1>
             <p className="text-gray-600 mt-2">
-              Here's how to get started with BeeHype and start connecting with
-              brands.
+              Here&apos;s how to get started with BeeHype and start connecting
+              with brands.
             </p>
           </div>
         </div>
@@ -95,7 +74,7 @@ export default function IntroPage() {
           <CardHeader>
             <CardTitle>Setup Complete</CardTitle>
             <CardDescription>
-              Here's what you've accomplished during onboarding
+              Here&apos;s what you&apos;ve accomplished during onboarding
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -217,25 +196,6 @@ export default function IntroPage() {
               </CardContent>
             </Card>
           </div>
-        </div>
-
-        {/* Finish Button */}
-        <div className="text-center pt-6">
-          <Button
-            onClick={handleFinish}
-            disabled={isFinishing}
-            size="lg"
-            className="bg-green-600 hover:bg-green-700 text-white px-8"
-          >
-            {isFinishing ? "Finishing Setup..." : "Go to Dashboard"}
-          </Button>
-
-          {!allRequiredCompleted && (
-            <p className="text-sm text-orange-600 mt-3">
-              Note: Complete your profile and add social links for the best
-              experience
-            </p>
-          )}
         </div>
 
         {/* Additional Resources */}
