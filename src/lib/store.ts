@@ -7,7 +7,7 @@ export type CreatorProfile = {
   name: string
   headline: string
   bio: string
-  location?: string
+  location: string
   specialties: string[]
 }
 

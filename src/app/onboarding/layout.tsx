@@ -17,12 +17,12 @@ import {
 const STEPS = [
   "welcome",
   "profile",
-  "gmail",
   "specialties",
+  "gmail",
   "socials",
-  "links",
   "intro",
 ] as const;
+type Step = (typeof STEPS)[number];
 
 export default function OnboardingLayout({
   children,
@@ -33,59 +33,36 @@ export default function OnboardingLayout({
   const router = useRouter();
   const [showSkipDialog, setShowSkipDialog] = useState(false);
 
-  // Get current step index
-  const currentStep = STEPS.find((step) => pathname.includes(step));
-  const currentIndex = currentStep ? STEPS.indexOf(currentStep) : 0;
+  // derive current step/index
+  const seg = (pathname.split("/").pop() || "welcome") as Step;
+  const currentIndex = Math.max(0, STEPS.indexOf(seg));
   const canGoBack = currentIndex > 0;
 
   const handleBack = () => {
-    if (currentIndex < 0) {
-      console.warn(
-        "Unknown step for pathname:",
-        pathname,
-        "— check STEPS array and routes."
-      );
-    }
-    if (currentIndex > 0) {
-      const prevStep = STEPS[currentIndex - 1];
-      router.push(`/onboarding/${prevStep}`);
-    }
+    if (currentIndex > 0) router.push(`/onboarding/${STEPS[currentIndex - 1]}`);
   };
 
   const handleContinue = () => {
-    // Handle form submissions for specific steps
-    if (currentStep === "profile") {
-      // Use the global form submission handler
-      const profileHandleContinue = (
+    // let the Profile page run its form submit
+    if (seg === "profile") {
+      (
         window as Window & { profileHandleContinue?: () => void }
-      ).profileHandleContinue;
-      if (profileHandleContinue) {
-        profileHandleContinue();
-        return;
-      }
+      ).profileHandleContinue?.();
+      return;
     }
-
     if (currentIndex < STEPS.length - 1) {
-      const nextStep = STEPS[currentIndex + 1];
-      router.push(`/onboarding/${nextStep}`);
+      router.push(`/onboarding/${STEPS[currentIndex + 1]}`);
     }
-  };
-
-  const handleSkipConfirm = () => {
-    router.push("/dashboard");
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      {/* Sticky Header with Progress and Skip Button */}
+      {/* sticky header */}
       <header className="sticky top-0 z-40 bg-background/80 backdrop-blur border-b">
         <div className="relative mx-auto w-full max-w-6xl px-6 py-3">
-          {/* Progress (mathematically centered) */}
-          <div className="mx-auto max-w-3xl">
-            <AppStepper currentIndex={currentIndex} total={STEPS.length} />
-          </div>
-
-          {/* Skip doesn't affect centering */}
+          {/* bar centered */}
+          <AppStepper value={currentIndex + 1} total={STEPS.length} />
+          {/* Skip (absolute so it never shifts centering) */}
           <Button
             variant="ghost"
             size="sm"
@@ -97,10 +74,9 @@ export default function OnboardingLayout({
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="flex-1">{children}</main>
 
-      {/* Sticky Footer with Navigation */}
+      {/* sticky footer */}
       <footer className="sticky bottom-0 z-40 border-t bg-background/80 backdrop-blur px-6 py-2">
         <StepFooter
           canGoBack={canGoBack}
@@ -109,7 +85,7 @@ export default function OnboardingLayout({
         />
       </footer>
 
-      {/* Skip Confirmation Dialog */}
+      {/* Skip confirm */}
       <Dialog open={showSkipDialog} onOpenChange={setShowSkipDialog}>
         <DialogContent>
           <DialogHeader>
@@ -123,7 +99,10 @@ export default function OnboardingLayout({
             <Button variant="outline" onClick={() => setShowSkipDialog(false)}>
               Cancel
             </Button>
-            <Button variant="destructive" onClick={handleSkipConfirm}>
+            <Button
+              variant="destructive"
+              onClick={() => router.push("/dashboard")}
+            >
               Skip
             </Button>
           </DialogFooter>

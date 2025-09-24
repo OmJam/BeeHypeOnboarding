@@ -3,13 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -32,7 +26,7 @@ export default function ProfilePage() {
   const [showEmptyFieldsAlert, setShowEmptyFieldsAlert] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
-  const form = useForm<ProfileFormData>({
+  const form = useForm({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       name: profile.name || "",
@@ -62,7 +56,7 @@ export default function ProfilePage() {
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 500));
 
-    router.push("/onboarding/gmail");
+    router.push("/onboarding/specialties");
   });
 
   // Expose handleContinue to parent layout

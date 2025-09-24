@@ -6,8 +6,8 @@ export const profileSchema = z.object({
   name: z.string().trim().min(1, "Full name is required").max(80),
   headline: z.string().trim().min(1, "Professional headline is required").max(60),
   bio: z.string().trim().min(1, "Bio is required").max(600),
-  location: z.string().optional().default(""),
-  specialties: z.array(z.string()).optional().default([]),
+  location: z.string().default(""),
+  specialties: z.array(z.string()).default([]),
 });
 
 // Social link schema
