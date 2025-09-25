@@ -43,16 +43,22 @@ export default function OnboardingLayout({
   };
 
   const handleContinue = () => {
-    // let the Profile page run its form submit
+    // Let the Profile page run its form submit
     if (seg === "profile") {
       (
         window as Window & { profileHandleContinue?: () => void }
       ).profileHandleContinue?.();
       return;
     }
-    if (currentIndex < STEPS.length - 1) {
-      router.push(`/onboarding/${STEPS[currentIndex + 1]}`);
+
+    // If we're on the last step, go to dashboard
+    if (currentIndex === STEPS.length - 1) {
+      router.push("/dashboard");
+      return;
     }
+
+    // Otherwise go to the next step
+    router.push(`/onboarding/${STEPS[currentIndex + 1]}`);
   };
 
   return (
@@ -82,6 +88,9 @@ export default function OnboardingLayout({
           canGoBack={canGoBack}
           onBack={handleBack}
           onContinue={handleContinue}
+          continueText={
+            currentIndex === STEPS.length - 1 ? "Finish" : "Continue"
+          }
         />
       </footer>
 

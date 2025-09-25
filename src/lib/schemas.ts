@@ -11,22 +11,22 @@ export const profileSchema = z.object({
 });
 
 // Social link schema
-export const socialRowSchema = z.object({
-  platform: z.string().min(1, 'Please select a platform'),
-  username: z.string()
-    .min(2, 'Username must be at least 2 characters')
-    .max(30, 'Username must be less than 30 characters'),
-  url: z.string().url('Please enter a valid URL'),
-  verified: z.boolean()
-})
+export const socialLinkSchema = z.object({
+  id: z.string(),
+  platform: z.enum(["instagram","tiktok","youtube","twitter","facebook","linkedin","pinterest","twitch","other"]),
+  username: z.string().trim().optional().default(""),
+  url: z.string().trim().optional().default("")
+    .refine(v => v === "" || /^https?:\/\//i.test(v), "Enter a valid URL (http/https)"),
+}).refine(v => !!(v.username?.trim() || v.url?.trim()), {
+  message: "Add a username or a profile URL.", path: ["url"]
+});
 
 // Custom link schema
 export const customLinkSchema = z.object({
-  name: z.string()
-    .min(2, 'Link name must be at least 2 characters')
-    .max(30, 'Link name must be less than 30 characters'),
-  url: z.string().url('Please enter a valid URL')
-})
+  id: z.string(),
+  label: z.string().trim().min(1, "Link name is required"),
+  url: z.string().trim().min(1, "URL is required").url("Enter a valid URL"),
+});
 
 // Step validation schemas
 export const stepValidationSchemas = {
@@ -37,7 +37,7 @@ export const stepValidationSchemas = {
     specialties: z.array(z.string()).min(1, 'Please select at least one specialty')
   }),
   socials: z.object({
-    socials: z.array(socialRowSchema).optional()
+    socials: z.array(socialLinkSchema).optional()
   }),
   links: z.object({
     links: z.array(customLinkSchema).optional()
@@ -46,5 +46,5 @@ export const stepValidationSchemas = {
 }
 
 export type ProfileFormData = z.infer<typeof profileSchema>;
-export type SocialRowFormData = z.infer<typeof socialRowSchema>
+export type SocialLinkFormData = z.infer<typeof socialLinkSchema>
 export type CustomLinkFormData = z.infer<typeof customLinkSchema>

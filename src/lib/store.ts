@@ -16,12 +16,11 @@ export type SocialLink = {
   platform: string
   username: string
   url: string
-  verified: boolean
 }
 
 export type CustomLink = {
   id: string
-  name: string
+  label: string
   url: string
 }
 

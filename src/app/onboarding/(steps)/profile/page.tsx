@@ -90,9 +90,9 @@ export default function ProfilePage() {
         </div>
 
         {/* Two Column Layout */}
-        <div className="mx-auto max-w-5xl px-6 lg:grid lg:grid-cols-2 lg:gap-8 lg:items-start lg:justify-items-stretch">
+        <div className="mx-auto max-w-5xl px-6 lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center lg:justify-items-stretch">
           {/* Left Column - Tips */}
-          <Card className="self-start">
+          <Card className="">
             <CardHeader>
               <CardTitle>Tips for a Great Profile</CardTitle>
             </CardHeader>
@@ -131,7 +131,7 @@ export default function ProfilePage() {
           </Card>
 
           {/* Right Column - Profile Form */}
-          <Card className="self-start">
+          <Card className="">
             <CardContent>
               {/* Empty Fields Alert */}
               {showEmptyFieldsAlert && (

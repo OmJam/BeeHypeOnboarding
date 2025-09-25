@@ -37,19 +37,6 @@ export default function WelcomePage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-start gap-3">
-              <Mail className="w-5 h-5 text-gray-400 mt-0.5" />
-              <div>
-                <h3 className="font-medium text-gray-900">
-                  Connect Gmail (Optional)
-                </h3>
-                <p className="text-sm text-gray-600">
-                  Link your email to streamline communication with brands. You
-                  can skip this step if you prefer.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
               <User className="w-5 h-5 text-gray-400 mt-0.5" />
               <div>
                 <h3 className="font-medium text-gray-900">
@@ -58,6 +45,17 @@ export default function WelcomePage() {
                 <p className="text-sm text-gray-600">
                   Add your name, headline, bio, and specialties to help brands
                   find you.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <Mail className="w-5 h-5 text-gray-400 mt-0.5" />
+              <div>
+                <h3 className="font-medium text-gray-900">Connect Gmail</h3>
+                <p className="text-sm text-gray-600">
+                  Link your email to streamline communication with brands. You
+                  can skip this step if you prefer.
                 </p>
               </div>
             </div>
